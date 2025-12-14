@@ -1,6 +1,7 @@
 from agents.sales_agent import run_sales_agent
 from agents.main_agent.src.load_pdf import load_rfp_pdf
 from agents.main_agent.src.summary import extract_role_relevant_text
+from agents.main_agent.src.parse import build_product_table
 
 # Step 1: Run Sales Agent
 rfp = run_sales_agent()
@@ -26,3 +27,10 @@ for line in relevant_text["technical_text"]:
 print("\n--- Testing & Acceptance Information (for Pricing Agent) ---")
 for line in relevant_text["testing_text"]:
     print(line)
+
+# Step 4: Build Product Table from Technical Information
+product_table = build_product_table(relevant_text["technical_text"])
+
+print("\n--- Product Table (Structured Output) ---")
+for product in product_table:
+    print(product)
