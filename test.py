@@ -15,9 +15,6 @@ print("\n================ MAIN AGENT TEST START ================\n")
 # Step 1: Run Sales Agent
 
 rfp = run_sales_agent()
-print("Sales Agent Output:")
-print(rfp)
-
 # Safety check
 if not rfp or "rfp_pdf_path" not in rfp:
     raise ValueError("Sales Agent did not return valid RFP data")
