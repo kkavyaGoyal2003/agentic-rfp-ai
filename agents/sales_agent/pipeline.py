@@ -38,7 +38,9 @@ def is_within_next_3_months(due_date_str: str, current_date_str: str) -> bool:
     return current_date <= due_date <= max_date
 
 
-def get_rfp():
+def get_rfp(start_date):
+    if not start_date:
+        start_date = CURRENT_DATE
     llm_client = OllamaLLM(
         model="llama3.2",
         base_url="http://localhost:11434"
@@ -61,7 +63,7 @@ def get_rfp():
             llm_client=llm_client,
             parsed_html=parsed,
             source_url=url,
-            current_date=CURRENT_DATE
+            current_date=start_date
         )
 
         # STEP 4: Normalize metadata
@@ -70,7 +72,7 @@ def get_rfp():
         # STEP 5: Filter (next 3 months)
         if not is_within_next_3_months(
             metadata.get("submission_due_date"),
-            CURRENT_DATE
+            start_date
         ):
             print("Skipped (not due in next 3 months)")
             continue

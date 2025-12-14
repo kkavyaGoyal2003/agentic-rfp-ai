@@ -1,1 +1,3 @@
+https://nicd-demo.netlify.app/
+https://infrastracksolutionlimited-demo.netlify.app/
 https://powergrid-rfp-demo.netlify.app/

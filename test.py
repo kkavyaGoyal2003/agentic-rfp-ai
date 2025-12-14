@@ -15,6 +15,8 @@ print("\n================ MAIN AGENT TEST START ================\n")
 # Step 1: Run Sales Agent
 
 rfp = run_sales_agent()
+# rfp = run_sales_agent("2026-09-09") # to test the 3rd RFP
+
 # Safety check
 if not rfp or "rfp_pdf_path" not in rfp:
     raise ValueError("Sales Agent did not return valid RFP data")
