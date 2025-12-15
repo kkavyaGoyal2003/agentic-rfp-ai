@@ -18,10 +18,10 @@ def normalize_rfp_specs(
     for item in product_table:
         spec = {
             "rfp_item_id": item.get("rfp_item_id"),
-            "category": normalize_text(item.get("category")),
+            "category": normalize_category(item.get("category")),  # CHANGED
             "cable_type": normalize_text(item.get("cable_type")),
-            "armored": extract_armored(item),
-            "conductor_material": normalize_text(item.get("conductor_material")),
+            "armored": normalize_armored(item),  # CHANGED
+            "conductor_material": normalize_material(item.get("conductor_material")),  # CHANGED
             "conductor_size": normalize_conductor_size(
                 item.get("conductor_size")
             ),
@@ -45,13 +45,60 @@ def normalize_text(value):
     return value.strip().lower()
 
 
-def extract_armored(item: Dict):
+def normalize_category(value):
+    """Map RFP categories to standardized categories"""
+    if not value:
+        return None
+    
+    value = value.lower().strip()
+    
+    # Category mapping
+    if "instrument" in value:
+        return "instrument cable"
+    elif "power" in value or "33 kv" in value.lower():
+        return "power cable"
+    elif "control" in value:
+        return "control cable"
+    elif "communication" in value:
+        return "communication cable"
+    elif "data" in value:
+        return "data cable"
+    elif "fiber" in value:
+        return "fiber optic"
+    else:
+        return value
+
+
+def normalize_armored(item: Dict):
+    """Normalize armored to STRING 'Y' or 'N' to match SKU format"""
     raw = " ".join(item.get("raw_block", [])).lower()
     if "armored yes" in raw or "armoured yes" in raw:
-        return "Y"
+        return "Y"  # CHANGED: Return string 'Y'
     if "armored no" in raw or "armoured no" in raw:
-        return "N"
-    return None
+        return "N"  # CHANGED: Return string 'N'
+    
+    # Check for armored in cable type
+    if "armored" in raw or "armoured" in raw:
+        return "Y"  # CHANGED: Return string 'Y'
+    
+    return "N"  # CHANGED: Default to 'N'
+
+def normalize_material(value):
+    """Normalize conductor material"""
+    if not value:
+        return None
+    
+    value = value.lower().strip()
+    
+    # Material mapping
+    if "copper" in value:
+        return "copper"
+    elif "aluminium" in value or "aluminum" in value:
+        return "aluminium"
+    elif "steel" in value:
+        return "steel"
+    else:
+        return value
 
 
 def extract_voltage(item: Dict):

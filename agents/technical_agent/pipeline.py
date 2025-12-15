@@ -5,6 +5,7 @@ project_root = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 
 from agents.technical_agent.src.load_data import load_oem_datasheet
 from agents.technical_agent.src.normalize_rfp_spec import normalize_rfp_specs
+from agents.technical_agent.src.filter_compliant_skus import filter_compliant_skus
 
 
 def run_technical_pipeline(main_agent_output: dict) -> dict:
@@ -38,8 +39,18 @@ def run_technical_pipeline(main_agent_output: dict) -> dict:
     # --------------------------------------------------
     rfp_specs = normalize_rfp_specs(product_table, technical_summary)
 
+    rfp_results = []
+
+    for rfp_item in rfp_specs:
+        compliant, rejected = filter_compliant_skus(rfp_item, datasheets)
+
+        rfp_results.append({
+            "rfp_item_id": rfp_item["rfp_item_id"],
+            "compliant_skus": [sku["sku"] for sku in compliant],
+            "rejected_count": len(rejected)
+        })
 
     return {
-        "rfp_items": [],
-        "status": "Technical Agent pipeline scaffolded (not yet implemented)"
+        "rfp_items": rfp_results,
+        "status": "Technical Agent hard-gate matching completed"
     }
