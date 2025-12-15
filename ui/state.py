@@ -1,10 +1,18 @@
-def init_state(st):
+import streamlit as st
+
+def init_state():
     if "urls" not in st.session_state:
         st.session_state.urls = []
 
-    if "url_status" not in st.session_state:
-        st.session_state.url_status = {}
+    if "events" not in st.session_state:
+        st.session_state.events = []
 
+    if "results" not in st.session_state:
+        st.session_state.results = None
+
+    if "running" not in st.session_state:
+        st.session_state.running = False
+        
     if "sales_outputs" not in st.session_state:
         st.session_state.sales_outputs = {}
 

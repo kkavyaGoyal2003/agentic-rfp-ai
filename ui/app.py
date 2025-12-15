@@ -17,7 +17,7 @@ if str(PROJECT_ROOT) not in sys.path:
 from state import init_state
 from styles import load_css
 
-init_state(st)
+init_state()
 load_css()
 
 st.title("🤖 Agentic RFP Response Automation")

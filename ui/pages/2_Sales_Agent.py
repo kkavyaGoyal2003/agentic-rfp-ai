@@ -1,33 +1,63 @@
-# ui/pages/2_Sales_Agent.py
 import streamlit as st
-from callbacks import start_sales_agent, retry_url
-from components.url_status import render_url_status
-from components.timeline import render_timeline
+from agents.sales_agent import run_sales_agent
+from state import init_state
+from components.url_card import render_url_card
 
-st.header("🧾 Sales Agent")
+st.set_page_config(page_title="Sales Agent", layout="wide")
+st.title("🧾 Sales Agent")
 
-if not st.session_state.urls:
-    st.info("No URLs submitted yet.")
-else:
-    for url in st.session_state.urls:
-        status = st.session_state.url_status[url]
+init_state()
 
-        col1, col2 = st.columns([3, 1])
+# ---------------------------
+# GUARD
+# ---------------------------
+if not st.session_state.get("urls"):
+    st.info("No URLs submitted yet. Please add URLs from the Input page.")
+    st.stop()
 
-        with col1:
-            render_url_status(url, status)
-            render_timeline(status["history"])
+# ---------------------------
+# RUN BUTTON
+# ---------------------------
+if st.button("🚀 Run Sales Agent"):
+    st.session_state.running = True
+    st.session_state.events = []
+    st.session_state.results = None
 
-        with col2:
-            st.button(
-                "▶ Start",
-                on_click=start_sales_agent,
-                args=(url,),
-                key=f"start_{url}"
-            )
-            st.button(
-                "🔄 Retry",
-                on_click=retry_url,
-                args=(url,),
-                key=f"retry_{url}"
-            )
+# ---------------------------
+# PLACEHOLDERS
+# ---------------------------
+status_placeholder = st.empty()
+final_placeholder = st.empty()
+
+# ---------------------------
+# RUN PIPELINE (STREAMING)
+# ---------------------------
+if st.session_state.running:
+    status_placeholder.info("Running Sales Agent...")
+
+    for event in run_sales_agent(urls=st.session_state.urls):
+        st.session_state.events.append(event)
+
+        # 🔁 FORCE UI UPDATE
+        with status_placeholder.container():
+            st.subheader("Live Status")
+            for url in st.session_state.urls:
+                render_url_card(url, st.session_state.events)
+
+        if event["type"] == "FINAL_RESULT":
+            st.session_state.results = event["data"]
+            st.session_state.running = False
+            break
+
+# ---------------------------
+# FINAL OUTPUT
+# ---------------------------
+if st.session_state.results:
+    final_placeholder.divider()
+    final_placeholder.subheader("✅ Delivered to Main Agent")
+
+    selected = st.session_state.results["selected_rfp"]
+    if not selected:
+        final_placeholder.info("No eligible RFP found.")
+    else:
+        final_placeholder.json(selected)

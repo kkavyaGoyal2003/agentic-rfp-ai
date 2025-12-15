@@ -9,7 +9,15 @@ print("\n================ AGENTIC RFP PIPELINE TEST START ================\n")
 # Step 1: Run Sales Agent
 # ------------------------------------------------------
 print(">> Running Sales Agent...")
-rfp = run_sales_agent()
+
+rfp = None
+for event in run_sales_agent():
+    if event["type"] == "FINAL_RESULT":
+        rfp = event["data"]["selected_rfp"]
+
+print(">> Sales Agent completed.")
+print(rfp)
+
 
 if not rfp:
     raise ValueError("Sales Agent did not return an RFP")

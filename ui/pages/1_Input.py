@@ -27,11 +27,4 @@ if st.button("Submit URLs"):
     # Remove duplicates
     st.session_state.urls = list(set(urls))
 
-    # Initialize status for each URL
-    for url in st.session_state.urls:
-        st.session_state.url_status[url] = {
-            "stage": "Queued",
-            "history": []
-        }
-
     st.success(f"{len(st.session_state.urls)} URLs queued successfully.")
