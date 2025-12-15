@@ -14,7 +14,6 @@ if not rfp:
     raise ValueError("Sales Agent did not return an RFP")
 
 
-
 # ------------------------------------------------------
 # Step 2: Run Main Agent
 # ------------------------------------------------------
@@ -29,6 +28,12 @@ technical_result = run_technical_agent(main_result)
 # Step 4: Display Outputs (test-only)
 # ------------------------------------------------------
 print("RFP Reference    :", main_result["rfp_metadata"].get("tender_reference"))
+
+print("\n--- Main Agent: Technical Summary ---")
+print(main_result.get("technical_summary", "No technical summary generated"))
+
+print("\n--- Main Agent: Pricing Summary ---")
+print(main_result.get("pricing_summary", "No pricing summary generated"))
 
 print("\n--- Technical Agent Output ---")
 print(technical_result)
