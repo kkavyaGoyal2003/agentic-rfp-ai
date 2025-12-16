@@ -1,5 +1,6 @@
 import streamlit as st
 from agents.main_agent.main_agent import run_main_draft
+from agents.main_agent.src.consolidate_response import consolidate_rfp_response
 
 # ==================================================
 # PAGE CONFIG & STYLING
@@ -414,5 +415,20 @@ if "main_with_pricing" in st.session_state:
     **Next Step:** Navigate to the **📊 Reports** page to review and export the final submission package.
     """, icon="🎉")
     
+    # --------------------------------------------------
+    # CONSOLIDATE FINAL RESPONSE
+    # --------------------------------------------------
+    final_rfp_response = consolidate_rfp_response(
+        main_result=st.session_state.main_draft,
+        technical_result=st.session_state.technical_result,
+        pricing_result=st.session_state.pricing_result
+    )
+    
+
+    # --------------------------------------------------
+    # STORE FOR REPORTS PAGE
+    # --------------------------------------------------
+    st.session_state.final_rfp_response = final_rfp_response
+    
     if st.button("📊 View Final Report", use_container_width=True, type="primary"):
-        st.switch_page("pages/reports.py")
+        st.switch_page("pages/6_Final_Report.py")
