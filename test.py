@@ -70,5 +70,6 @@ print("\nTotals:")
 print("Material Cost :", final_result["pricing"]["total_material_cost"])
 print("Test Cost     :", final_result["pricing"]["total_test_cost"])
 print("Grand Total   :", final_result["pricing"]["grand_total"])
+print("pdf is downloaded")
 
 print("\n================ TEST END =================\n")
