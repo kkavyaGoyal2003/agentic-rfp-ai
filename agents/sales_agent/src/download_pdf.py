@@ -22,7 +22,6 @@ def download_pdf(pdf_url: str, source_url: str) -> Optional[str]:
         os.makedirs(DOWNLOADS_DIR, exist_ok=True)
 
         # Handle relative URLs
-        pdf_url = pdf_url.replace("\\", "/")
         full_pdf_url = urljoin(source_url, pdf_url)
 
         # Validate URL format
