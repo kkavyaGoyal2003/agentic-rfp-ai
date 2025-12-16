@@ -8,6 +8,8 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+from sidebar import app_sidebar
+app_sidebar()
 
 # ==================================================
 # SHARED STYLING (MATCHES MAIN AGENT)

@@ -12,6 +12,9 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+from sidebar import app_sidebar
+app_sidebar()
+
 st.markdown("""
 <style>
     .main > div { padding-top: 2rem; }

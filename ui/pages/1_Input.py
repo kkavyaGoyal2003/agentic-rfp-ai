@@ -9,6 +9,9 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+from sidebar import app_sidebar
+app_sidebar()
+
 # Custom CSS for professional styling
 st.markdown("""
 <style>
