@@ -92,6 +92,14 @@ def get_rfp(start_date=None, urls=None):
 
             html = fetch_html(url)
             parsed = parse_html(html)
+            
+            pdf_href = None
+            for link in parsed.get("links", []):
+                href = link.get("href", "")
+                if href.lower().endswith(".pdf"):
+                    pdf_href = href
+                    break
+
 
             url_state["stages"]["fetching"]["status"] = "done"
             yield {
@@ -118,6 +126,9 @@ def get_rfp(start_date=None, urls=None):
             )
 
             metadata = normalize_metadata(raw_metadata, url)
+            if pdf_href:
+                metadata["pdf_url"] = pdf_href
+
 
             url_state["stages"]["summarizing"]["status"] = "done"
             url_state["metadata"] = metadata

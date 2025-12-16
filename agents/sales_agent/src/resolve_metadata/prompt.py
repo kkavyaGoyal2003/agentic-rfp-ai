@@ -13,7 +13,7 @@ Required JSON fields:
 - tender_reference
 - tender_title
 - submission_due_date
-- pdf_url
+- rfp_pdf_name
 """
 
 def build_user_prompt(parsed_html, source_url, current_date):
@@ -28,7 +28,8 @@ INSTRUCTIONS:
 - Identify the tender reference number
 - Identify the tender title
 - Identify the submission due date (submission end / bid submission end / deadline)
-- Identify the most relevant RFP PDF link from the links section
+- Identify the NAME of the most relevant RFP PDF (use visible link text only)
+
 
 CONTENT:
 
