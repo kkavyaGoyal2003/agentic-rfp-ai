@@ -23,7 +23,7 @@ def generate_rfp_response_pdf(final_response: dict, output_path: str):
         c.drawString(
             40, y,
             f"Item {p['rfp_item_id']} | SKU: {p['sku']} | "
-            f"{p['product_name']} | Price: ₹{p['unit_price']}"
+            f"{p['product_name']} | Price: Rs {p['unit_price']}"
         )
         y -= 15
 
@@ -38,7 +38,7 @@ def generate_rfp_response_pdf(final_response: dict, output_path: str):
     for t in final_response["tests"]:
         c.drawString(
             40, y,
-            f"{t['test_name']} | Cost: ₹{t['price']}"
+            f"{t['test_name']} | Cost: Rs {t['price']}"
         )
         y -= 15
 
@@ -50,10 +50,10 @@ def generate_rfp_response_pdf(final_response: dict, output_path: str):
     y -= 20
 
     c.setFont("Helvetica", 10)
-    c.drawString(40, y, f"Material Cost : ₹{final_response['totals']['material_cost']}")
+    c.drawString(40, y, f"Material Cost : Rs {final_response['totals']['material_cost']}")
     y -= 15
-    c.drawString(40, y, f"Test Cost     : ₹{final_response['totals']['test_cost']}")
+    c.drawString(40, y, f"Test Cost     : Rs {final_response['totals']['test_cost']}")
     y -= 15
-    c.drawString(40, y, f"Grand Total   : ₹{final_response['totals']['grand_total']}")
+    c.drawString(40, y, f"Grand Total   : Rs {final_response['totals']['grand_total']}")
 
     c.save()
