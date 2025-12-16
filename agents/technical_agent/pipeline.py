@@ -1,5 +1,3 @@
-# agents/technical_agent/pipeline.py
-
 from agents.technical_agent.src.validate_input import validate_technical_input
 from agents.technical_agent.src.load_oem import load_oem_products
 from agents.technical_agent.src.normalize_specs import normalize_spec_block_llm

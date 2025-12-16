@@ -1,5 +1,3 @@
-# agents/technical_agent/technical_agent.py
-
 from agents.technical_agent.pipeline import run_technical_pipeline
 
 
